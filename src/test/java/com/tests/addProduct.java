@@ -22,15 +22,16 @@ import java.util.concurrent.TimeUnit;
 public class addProduct extends BaseTest {
 
 
+    String productName = "Samsung Ultra Pro";
 
     @Test
-    public void addProducts(){
+    public void addProducts() throws InterruptedException {
         DriverFactory.getInstance().getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         LoginPage loginPage = new LoginPage();
         loginPage.loginApplication(TestDataLoader.getInstance().getUsername(), TestDataLoader.getInstance().getPassword());
 
         ProductPage addPro = new ProductPage();
-        addPro.addProduct();
+        addPro.addProduct(productName);
 
         //Assert.assertEquals(DriverFactory.getInstance().getDriver().getTitle(),"hjehfgyafguyg");
     }

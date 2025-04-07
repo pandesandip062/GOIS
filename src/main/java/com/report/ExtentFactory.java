@@ -64,7 +64,7 @@ public class ExtentFactory {
     // Methods for passing and failing actions
     public static void clickPass(String btnName) {
         if (getInstance().getExtentTest() != null) {
-            getInstance().getExtentTest().pass(btnName + " button is clicked");
+            getInstance().getExtentTest().pass(btnName + " button is clicked ");
         }
     }
 

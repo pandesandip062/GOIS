@@ -106,27 +106,25 @@ public class sales extends BasePage {
     }
 
 
-
     public void SalesClick(String shipping) throws InterruptedException, IOException {
-        super.click(Sale, "clicked on sales link");
-        this.click(salesOrder, "clicked on sales order");
-        // String firstWindow = DriverFactory.getInstance().getDriver().getWindowHandle();
+        super.click(Sale, "sales link");
+        this.click(salesOrder, "sales order");
         List<String> listofPages = new ArrayList<String>(DriverFactory.getInstance().getDriver().getWindowHandles());
-        // System.out.println(listofPages);
         DriverFactory.getInstance().getDriver().switchTo().window(listofPages.get(1));
         DriverFactory.getInstance().getDriver().switchTo().frame(Iframe);
-        this.click(createLabel, "clicked");
-        this.click(OkCTA, "clicked");
+        this.click(createLabel, "create label");
+        this.click(OkCTA, "ok button");
 
 
-        Thread.sleep(20000);
+        this.isElementVisible(shippingAgent, "shipping agent avaliable");
         //packingType.click();
         /* Select select = new Select(packingType);
 
         select.selectByVisibleText("API");*/
 
         Select select1 = new Select(shippingAgent);
-        select1.selectByVisibleText("FedEx (kumar)");
+        Thread.sleep(3000);
+        select1.selectByVisibleText("UPS (MetaOption LLC)");
 
 
         Thread.sleep(3000);
@@ -145,7 +143,7 @@ public class sales extends BasePage {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String formattedDate = today.format(formatter);
-        this.isClickable(createLabelNow, "clickable");
+        this.isClickable(createLabelNow, "create label");
 
         this.sendKeys(Notes, "Notes", "testing");
 
@@ -153,49 +151,45 @@ public class sales extends BasePage {
         packingDate.sendKeys(formattedDate);
         Thread.sleep(4000);
         JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getInstance().getDriver();
-        //  js.executeScript("arguments[0].scrollIntoView(true);", addToPackage);
-
-        js.executeScript("window.scrollBy(0, 65000);");
-        // js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-
-        Actions actions = new Actions(DriverFactory.getInstance().getDriver());
-        actions.sendKeys(Keys.PAGE_DOWN).perform();
-        Thread.sleep(3000);
+        js.executeScript("arguments[0].scrollIntoView(true);", managePackage);
+        Thread.sleep(4000);
         js.executeScript("window.scrollBy(0, 65000);");
 
 
-        this.click(managePackage, "jhj");
-        Thread.sleep(4000);
-        this.click(addPackage, "jhkjh");
-        Thread.sleep(4000);
-        this.sendKeys(packageWeight, "pw", "2");
-        Thread.sleep(4000);
+        this.click(managePackage, "Manage package");
+        Thread.sleep(2000);
+        this.click(addPackage, "Add Package");
+        Thread.sleep(2000);
+        this.sendKeys(packageWeight, "Package weight", "2");
+        Thread.sleep(2000);
         js.executeScript("arguments[0].scrollIntoView(true);", createLabelNow);
-        Thread.sleep(4000);
-        this.isClickable(createLabelNow, "clickable");
-        this.click(createLabelNow, "jsjs");
-        this.click(OkLabel, "clicked on OK");
+        Thread.sleep(2000);
+        this.isClickable(createLabelNow, "Create Label");
+        this.click(createLabelNow, "Create Label");
+        this.click(OkLabel, "OK button");
         this.isElementVisible(error, "toast error");
 
-        System.out.println("message" + error.getText());
+        System.out.println("Message --> "+ error.getText());
+        String message = error.getText();
+        Assert.assertEquals(message, "×\n" +
+                "Packing processed successfully");
 
 
-        String message = null;
         try {
-            this.click(selectPacking, "clicked");
+            this.click(selectPacking, "Select packing button ");
             Thread.sleep(3000);
             screenshot.screenshotMethod();
             Thread.sleep(4000);
-            this.click(voidCTA, "voided shippment");
-            this.click(OkCTA, "voided");
+            this.click(voidCTA, "voided shippment button ");
+            this.click(OkCTA, "Ok button");
             this.isElementVisible(error, "toast error");
-            message = error.getText();
+
             System.out.println("message" + error.getText());
         } catch (NoSuchElementException e) {
             screenshot.screenshotMethod();
         } catch (Exception e) {
             System.out.println("An unexpected error occurred: " + e.getMessage());
         }
-        Assert.assertEquals(message,"Packing processed successfully" );
+
     }
 }
